@@ -1,7 +1,7 @@
 import config from './../../server/config.js';
 
 const defaults = {
-  debug: false, // load bvh file / create performer from playback
+  debug: true, // load bvh file / create performer from playback
   debugBVH: 'models/bvh/duality_edit.bvh',
   backgroundColor: 0x333333,
   console2html: false,

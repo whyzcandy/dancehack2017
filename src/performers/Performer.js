@@ -833,6 +833,12 @@ class Performer {
     s.position.x = this.getOffset();
   }
 
+  setOffset2D(x, y) {
+    const s = this.getScene();
+    s.position.x = x;
+    s.position.y = y;
+  }
+
   getDelay() {
     return this.delay;
   }

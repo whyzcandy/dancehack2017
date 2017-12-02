@@ -647,21 +647,21 @@ class InputManager {
 	  	}
     });
 
-    // this.registerCallback('keyboard', ';', 'Tracking Camera - Zoom Out', function() {
-    // 	this.scene.cameraControl.trackZoom(
-    // 		new THREE.Vector3(0,0,100),
-    // 		TWEEN.Easing.Quadratic.InOut,
-    // 		5000
-    // 	);
-    // }.bind(this));
+    this.registerCallback('keyboard', ';', 'Tracking Camera - Zoom Out', function() {
+     	this.scene.cameraControl.trackZoom(
+     		new THREE.Vector3(0,0,100),
+     		TWEEN.Easing.Quadratic.InOut,
+     		5000
+     	);
+    }.bind(this));
 
-    // this.registerCallback('keyboard', "'", 'Tracking Camera - Zoom In', function() {
-    // 	this.scene.cameraControl.trackZoom(
-    // 		new THREE.Vector3(0,0,3),
-    // 		TWEEN.Easing.Quadratic.InOut,
-    // 		5000
-    // 	);
-    // }.bind(this));
+     this.registerCallback('keyboard', "'", 'Tracking Camera - Zoom In', function() {
+     	this.scene.cameraControl.trackZoom(
+     		new THREE.Vector3(0,0,3),
+     		TWEEN.Easing.Quadratic.InOut,
+     		5000
+    	);
+    }.bind(this));
 
     // this.registerCallback('keyboard', "a", 'randomize limb scale', function() {
     // 	_.each(this.parent.performers.performers, (performer) => {

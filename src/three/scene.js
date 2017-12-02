@@ -67,7 +67,7 @@ class Scene {
     // var src = Common.convertLatLonToVec3(startPos.lat, startPos.lon).multiplyScalar(radius);
 
     // this.camera.position.copy(src);
-    this.camera.position.set(0, 1.5000000041026476, 19.999990045581438);
+    this.camera.position.set(0, 1.5000000041026476, 119.999990045581438);
 
     this.scene.add(this.camera);
 

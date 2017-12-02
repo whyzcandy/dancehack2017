@@ -71,12 +71,23 @@ class GridEnvironment {
   }
 
   initFloor(floorSize, numLines, color) {
-    this.gridFloor = new THREE.GridHelper(floorSize / 2, numLines, color, color);
-    this.gridFloor.castShadow = true;
-    this.gridFloor.receiveShadow = true;
-    this.gridFloor.visible = true;
-    this.elements.push(this.gridFloor);
-    this.parent.add(this.gridFloor);
+    const loader = new THREE.OBJLoader();
+    loader.load('models/obj/stage.obj', (object) => {
+        console.log(object);
+        //object.scale.set(0.12, 0.12, 0.12);
+        object.rotation._x = -Math.PI / 2.0;
+        object.castShadow = true;
+        object.receiveShadow = true;
+        object.visible = true;
+        this.gridFloor = new THREE.GridHelper(floorSize / 2, numLines, color, color);
+        this.gridFloor.castShadow = true;
+        this.gridFloor.receiveShadow = true;
+        this.gridFloor.visible = true;
+        this.elements.push(this.gridFloor);
+        this.elements.push(object);
+        this.parent.add(this.gridFloor);
+        this.parent.add(object);
+    });
   }
 
   initLights(scene, camera) {
