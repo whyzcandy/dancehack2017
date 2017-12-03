@@ -6,6 +6,7 @@ const objLoader = require('./../libs/three/loaders/OBJLoader.js');
 const bvhLoader = require('./../libs/three/loaders/BVHLoader.js');
 const sceneLoader = require('./../libs/three/loaders/SceneLoader.js');
 const colladaLoader = require('./../libs/three/loaders/ColladaLoader.js');
+const mtlLoader = require('./../libs/three/loaders/MTLLoader.js');
 
 require('./../libs/BufferGeometryMerge.js');
 
