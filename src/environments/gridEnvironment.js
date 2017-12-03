@@ -88,6 +88,33 @@ class GridEnvironment {
         this.parent.add(this.gridFloor);
         this.parent.add(object);
     });
+
+    /*
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setBaseUrl( 'models/obj/' );
+    mtlLoader.setPath( 'models/obj/' );
+    var url = "materials.mtl";
+    var that = this;
+    
+    mtlLoader.load( url, ( materials ) => {
+
+        materials.preload();
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.setPath( 'models/obj/' );
+        objLoader.load( 'model.obj', ( object ) => {
+            object.scale.set(150, 150, 150);
+
+          object.rotation._x = -Math.PI / 2.0;
+          object.castShadow = true;
+          object.receiveShadow = true;
+          object.visible = true;
+          that.elements.push(object);
+          that.parent.add(object);
+      });
+      });
+      */
   }
 
   initLights(scene, camera) {
