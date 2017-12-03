@@ -109,7 +109,7 @@ class GridEnvironment {
         //this.parent.add(this.gridFloor);
         this.parent.add(object);
     });
-
+/*
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setBaseUrl( 'models/obj/' );
     mtlLoader.setPath( 'models/obj/' );
@@ -134,7 +134,7 @@ class GridEnvironment {
           that.elements.push(object);
           that.parent.add(object);
       });
-      });
+      });*/
   }
 
   initLights(scene, camera) {
