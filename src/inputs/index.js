@@ -135,18 +135,34 @@ class InputManager {
     this.registerCallback('gamepads', 'message', 'Gamepad', (data) => {
       const leftStick = _.merge(_.map(_.filter(data, d => d.id.slice(0, 4) == 'Left'), (d) => {
         const obj = {};
-        obj[d.id.slice(d.id.length - 1, d.id.length).toLowerCase()] = d.value;
+        obj[d.id.slice(d.id.length - 1, d.id.length).toLowerCase()] = d;
         return obj;
       }));
-      if (leftStick.length > 0) { console.log('Left Stick: ', leftStick); }
+      if (leftStick.length > 0) {
+        if (leftStick[0].x) {
+            if (leftStick[0].x.value !== previous.lStickX) {
+              //this.updateIntensity(1, Common.mapRange(Math.abs(leftStick[0].x.value), 0, 1, 0.1, 10));
+              console.log( "HI");
+            }
+            previous.lStickX = leftStick[0].x.value;
+        }
+      }
 
 
       const rightStick = _.merge(_.map(_.filter(data, d => d.id.slice(0, 5) == 'Right'), (d) => {
         const obj = {};
-        obj[d.id.slice(d.id.length - 1, d.id.length).toLowerCase()] = d.value;
+        obj[d.id.slice(d.id.length - 1, d.id.length).toLowerCase()] = d;
         return obj;
       }));
-      if (rightStick.length > 0) { console.log('Right Stick: ', rightStick); }
+      if (rightStick.length > 0) {
+        if (rightStick[0].x) {
+            if (rightStick[0].x.value !== previous.rStickX) {
+              //this.updateIntensity(2, Common.mapRange(Math.abs(rightStick[0].x.value), 0, 1, 0.1, 10));
+              console.log("HI");
+            }
+            previous.rStickX = rightStick[0].x.value;
+        }
+      }
 
       const dPad = _.merge(_.map(_.filter(data, d => d.id.slice(0, 4) == 'DPad'), (d) => {
         const obj = {};
@@ -646,6 +662,23 @@ class InputManager {
 	  		this.scene.cameraControl.clearTrack();
 	  	}
     });
+
+    this.registerCallback('keyboard', 'up', 'Move performer 0 up', () => {
+	    this.parent.performers.performers[Object.keys(this.parent.performers.performers)[0]].pushOffset2D(0, 0.1);
+    });
+
+    this.registerCallback('keyboard', 'down', 'Move performer 0 down', () => {
+	    this.parent.performers.performers[Object.keys(this.parent.performers.performers)[0]].pushOffset2D(0, -0.1);
+    });
+
+    this.registerCallback('keyboard', 'left', 'Move performer 0 up', () => {
+	    this.parent.performers.performers[Object.keys(this.parent.performers.performers)[0]].pushOffset2D(-0.1, 0);
+    });
+
+    this.registerCallback('keyboard', 'right', 'Move performer 0 down', () => {
+	    this.parent.performers.performers[Object.keys(this.parent.performers.performers)[0]].pushOffset2D(0.1, 0);
+    });
+
 
     this.registerCallback('keyboard', ';', 'Tracking Camera - Zoom Out', function() {
      	this.scene.cameraControl.trackZoom(

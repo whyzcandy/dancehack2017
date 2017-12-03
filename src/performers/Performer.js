@@ -91,6 +91,7 @@ class Performer {
     ]);
 
     this.scene = null;
+    this.velocity = { x: 0, y: 0 };
     this.modelShrink = 100;
 
     const bvhStructure = {
@@ -833,10 +834,14 @@ class Performer {
     s.position.x = this.getOffset();
   }
 
-  setOffset2D(x, y) {
+  pushOffset2D(u, v) {
     const s = this.getScene();
-    s.position.x = x;
-    s.position.y = y;
+    this.velocity.x += u;
+    this.velocity.y += v;
+    this.velocity.x = Math.min(this.velocity.x, 5);
+    this.velocity.x = Math.max(this.velocity.x, -5);
+    this.velocity.y = Math.min(this.velocity.y, 5);
+    this.velocity.y = Math.max(this.velocity.y, -5);
   }
 
   getDelay() {
@@ -1280,7 +1285,7 @@ class Performer {
       switch (this.type) {
         case 'perceptionNeuron':
           this.updateFromPN(this.dataBuffer.shift());
-          break;
+         break;
         case 'bvh':
         case 'clone':
           this.updateFromPN(this.dataBuffer.shift());// this.updateFromBVH(data);
@@ -1288,6 +1293,28 @@ class Performer {
       }
     }
     this.performerEffects.update(this.getScene());
+          const s = this.getScene();
+          console.log(this.velocity);
+          s.position.x += this.velocity.x;
+          s.position.y += this.velocity.y;
+ 
+    s.position.x = Math.min(s.position.x, 10);
+    s.position.x = Math.max(s.position.x, -10);
+    s.position.y = Math.min(s.position.y, 10);
+    s.position.y = Math.max(s.position.y, -10);
+
+    this.velocity.x = Math.max(this.velocity.x, -10);
+    this.velocity.x = Math.min(this.velocity.x, 10);
+    this.velocity.y = Math.max(this.velocity.y, -10);
+    this.velocity.y = Math.min(this.velocity.y, 10);
+
+    if (s.position.x == 10 || s.position.x == -10) {
+        this.velocity.x = 0;
+    }
+
+    if (s.position.y == 10 || s.position.y == -10) {
+        this.velocity.y = 0;
+    }
   }
 
   // p.dataBuffer.push(data);

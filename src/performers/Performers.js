@@ -101,7 +101,6 @@ class Performers {
   update(inputId, data) {
     if (this.performers[inputId]) {
     	this.performers[inputId].update(data);
-    	this.performers[inputId].setOffset2D(10, 10);
     }
 
     //_.each(this.performers, (p) => {
