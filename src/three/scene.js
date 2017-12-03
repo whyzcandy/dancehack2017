@@ -70,6 +70,7 @@ class Scene {
 
   getBrightness(target, curData, prevData) {
 
+      console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[0]]);
       if (curData.length !== prevData.length) return null;
       var curLeftAvg = 0;
       var curRightAvg = 0;
@@ -124,9 +125,17 @@ class Scene {
       }
 
       // Sides are inverted when displayed
-      console.log(curLeftAvg - curRightAvg);
-      console.log(curTotalAvg);
+      const x2 = (curLeftAvg - curRightAvg - 25) / 500;
+      const y2 = (curTotalAvg - 40) / 50;
+      console.log(x2);//curLeftAvg - curRightAvg);
+      console.log(y2);//curTotalAvg);
 
+    console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]]);
+
+    const performer = this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]];
+    if (performer) {
+        performer.pushOffset2D(x2, y2);
+    }
   }
 
   blend() {

@@ -71,7 +71,7 @@ class GridEnvironment {
   }
 
   initFloor(floorSize, numLines, color) {
-    const loader = new THREE.OBJLoader();
+    /*const loader = new THREE.OBJLoader();
     loader.load('models/obj/stage.obj', (object) => {
         console.log(object);
         //object.scale.set(0.12, 0.12, 0.12);
@@ -87,9 +87,8 @@ class GridEnvironment {
         this.elements.push(object);
         this.parent.add(this.gridFloor);
         this.parent.add(object);
-    });
+    });*/
 
-    /*
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setBaseUrl( 'models/obj/' );
     mtlLoader.setPath( 'models/obj/' );
@@ -114,7 +113,6 @@ class GridEnvironment {
           that.parent.add(object);
       });
       });
-      */
   }
 
   initLights(scene, camera) {

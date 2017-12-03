@@ -1295,7 +1295,6 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
-          console.log(this.velocity);
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
  
