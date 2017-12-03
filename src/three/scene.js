@@ -33,42 +33,61 @@ class Scene {
 
     this.environments = null;
 
-    this.canvasSource;
-    this.contextSource;
-    this.contextBlended;
-    this.video;
-    this.lastImageData;
+    this.videos = [];
 
   }
 
   initVideo() {
-      this.canvasSource = document.createElement('canvas');
-      this.canvasBlended = document.createElement('canvas');
-      this.canvasSource.width = this.canvasBlended.width = 250;
-      this.canvasSource.height = this.canvasBlended.height = 182;
 
       var center = {x: window.innerWidth / 2, y: window.innerHeight / 2};
 
-      this.contextBlended = this.canvasBlended.getContext('2d');
-      this.contextSource = this.canvasSource.getContext('2d');
+      navigator.mediaDevices.enumerateDevices().then((deviceInfo) => {
+        _.each(deviceInfo, (device) => {
+          if (device.kind === 'videoinput') {
+            console.log(device);
 
-      this.video = document.createElement('video');
+            var canvasSource = document.createElement('canvas');
+            var canvasBlended = document.createElement('canvas');
+            canvasSource.width = canvasBlended.width = 250;
+            canvasSource.height = canvasBlended.height = 182;
 
-      document.body.insertBefore(this.canvasBlended, document.body.firstChild);
-      document.body.insertBefore(this.canvasSource, document.body.firstChild);
+            var contextBlended = canvasBlended.getContext('2d');
+            var contextSource = canvasSource.getContext('2d');
 
-      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-      if (navigator.getUserMedia) {
+            document.body.insertBefore(canvasBlended, document.body.firstChild);
+            document.body.insertBefore(canvasSource, document.body.firstChild);
 
-          navigator.getUserMedia({video: true}, (stream) => {
-              this.video.src = window.URL.createObjectURL(stream);
-              hasCamera = true;
-          }, function(err) {
-          });
-      }
+            navigator.mediaDevices.getUserMedia(
+              { video: { deviceId: { exact: device.deviceId } } }
+            ).then((stream) => {
+              var video = document.createElement('video');
+              video.src = window.URL.createObjectURL(stream);
+              this.videos.push({
+                video: video,
+                canvasSource: canvasSource,
+                canvasBlended: canvasBlended,
+                contextSource: contextSource,
+                contextBlended: contextBlended,
+                lastImageData: null,
+              });
+            });
+          }
+        });
+
+      });
+
+      // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+      // if (navigator.getUserMedia) {
+      //
+      //     navigator.getUserMedia({video: true}, (stream) => {
+      //         this.video.src = window.URL.createObjectURL(stream);
+      //         console.log(this.video.src);
+      //     }, function(err) {
+      //     });
+      // }
   }
 
-  getBrightness(target, curData, prevData) {
+  getBrightness(target, curData, prevData, canvasWidth) {
 
       console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[0]]);
       if (curData.length !== prevData.length) return null;
@@ -78,7 +97,7 @@ class Scene {
       var prevRightAvg = 0;
 
       var i = 0;
-      var width = this.canvasSource.width;
+      var width = canvasWidth;
       var x = 0; // x position / column
       var total = 0;
 
@@ -138,17 +157,17 @@ class Scene {
     }
   }
 
-  blend() {
-      var width = this.canvasSource.width;
-      var height = this.canvasSource.height;
-      var sourceData = this.contextSource.getImageData(0, 0, width, height);
-      if (!this.lastImageData) {
-        this.lastImageData = this.contextSource.getImageData(0, 0, width, height);
+  blend(obj) {
+      var width = obj.canvasSource.width;
+      var height = obj.canvasSource.height;
+      var sourceData = obj.contextSource.getImageData(0, 0, width, height);
+      if (!obj.lastImageData) {
+        obj.lastImageData = obj.contextSource.getImageData(0, 0, width, height);
       }
-      var blendedData = this.contextSource.createImageData(width, height);
-      this.getBrightness(blendedData.data, sourceData.data, this.lastImageData.data);
-      this.contextBlended.putImageData(blendedData, 0, 0);
-      this.lastImageData = sourceData;
+      var blendedData = obj.contextSource.createImageData(width, height);
+      this.getBrightness(blendedData.data, sourceData.data, obj.lastImageData.data, obj.canvasSource.width);
+      obj.contextBlended.putImageData(blendedData, 0, 0);
+      obj.lastImageData = sourceData;
   }
 
   initScene(startPos, inputs, statsEnabled, performers, backgroundColor) {
@@ -319,8 +338,10 @@ class Scene {
 
     this.stats.update();
 
-    this.contextSource.drawImage(this.video, 0, 0, this.canvasSource.width, this.canvasSource.height);
-    this.blend();
+    _.each(this.videos, (obj) => {
+      obj.contextSource.drawImage(obj.video, 0, 0, obj.canvasSource.width, obj.canvasSource.height);
+      this.blend(obj);
+    })
 
     requestAnimationFrame(this.render.bind(this));
   }
