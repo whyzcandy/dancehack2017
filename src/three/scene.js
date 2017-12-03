@@ -35,6 +35,20 @@ class Scene {
 
     this.videos = [];
 
+    this.performers = [];
+
+  }
+
+  registerPerformer(performerId) {
+    for (var i = 0; i < this.videos.length; i++) {
+      if (this.videos[i].performer === null) {
+        this.videos[i].performer = this.environments.performers.performers[performerId];
+        this.performers.push(performerId);
+        console.log('performer added to video');
+        console.log(this.videos);
+        break;
+      }
+    }
   }
 
   initVideo() {
@@ -42,54 +56,45 @@ class Scene {
       var center = {x: window.innerWidth / 2, y: window.innerHeight / 2};
 
       navigator.mediaDevices.enumerateDevices().then((deviceInfo) => {
-        _.each(deviceInfo, (device) => {
-          if (device.kind === 'videoinput') {
-            console.log(device);
 
-            var canvasSource = document.createElement('canvas');
-            var canvasBlended = document.createElement('canvas');
-            canvasSource.width = canvasBlended.width = 250;
-            canvasSource.height = canvasBlended.height = 182;
+        var videoInputs = _.filter(deviceInfo, (device) => {
+          return device.kind === 'videoinput';
+        });
 
-            var contextBlended = canvasBlended.getContext('2d');
-            var contextSource = canvasSource.getContext('2d');
+        _.each(videoInputs, (device) => {
+          var canvasSource = document.createElement('canvas');
+          var canvasBlended = document.createElement('canvas');
+          canvasSource.width = canvasBlended.width = 250;
+          canvasSource.height = canvasBlended.height = 182;
 
-            document.body.insertBefore(canvasBlended, document.body.firstChild);
-            document.body.insertBefore(canvasSource, document.body.firstChild);
+          var contextBlended = canvasBlended.getContext('2d');
+          var contextSource = canvasSource.getContext('2d');
 
-            navigator.mediaDevices.getUserMedia(
-              { video: { deviceId: { exact: device.deviceId } } }
-            ).then((stream) => {
-              var video = document.createElement('video');
-              video.src = window.URL.createObjectURL(stream);
-              this.videos.push({
-                video: video,
-                canvasSource: canvasSource,
-                canvasBlended: canvasBlended,
-                contextSource: contextSource,
-                contextBlended: contextBlended,
-                lastImageData: null,
-              });
+          document.body.insertBefore(canvasBlended, document.body.firstChild);
+          document.body.insertBefore(canvasSource, document.body.firstChild);
+
+          navigator.mediaDevices.getUserMedia(
+            { video: { deviceId: { exact: device.deviceId } } }
+          ).then((stream) => {
+            var video = document.createElement('video');
+            video.src = window.URL.createObjectURL(stream);
+            this.videos.push({
+              video: video,
+              canvasSource: canvasSource,
+              canvasBlended: canvasBlended,
+              contextSource: contextSource,
+              contextBlended: contextBlended,
+              lastImageData: null,
+              performer: null,
             });
-          }
+          });
         });
 
       });
-
-      // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-      // if (navigator.getUserMedia) {
-      //
-      //     navigator.getUserMedia({video: true}, (stream) => {
-      //         this.video.src = window.URL.createObjectURL(stream);
-      //         console.log(this.video.src);
-      //     }, function(err) {
-      //     });
-      // }
   }
 
-  getBrightness(target, curData, prevData, canvasWidth) {
+  getBrightness(target, curData, prevData, canvasWidth, obj) {
 
-      console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[0]]);
       if (curData.length !== prevData.length) return null;
       var curLeftAvg = 0;
       var curRightAvg = 0;
@@ -146,14 +151,11 @@ class Scene {
       // Sides are inverted when displayed
       const x2 = (curLeftAvg - curRightAvg - 25) / 500;
       const y2 = (curTotalAvg - 40) / 50;
-      console.log(x2);//curLeftAvg - curRightAvg);
-      console.log(y2);//curTotalAvg);
+      // console.log(x2);//curLeftAvg - curRightAvg);
+      // console.log(y2);//curTotalAvg);
 
-    console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]]);
-
-    const performer = this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]];
-    if (performer) {
-        performer.pushOffset2D(x2, y2);
+    if (obj.performer) {
+        obj.performer.pushOffset2D(x2, y2);
     }
   }
 
@@ -165,14 +167,12 @@ class Scene {
         obj.lastImageData = obj.contextSource.getImageData(0, 0, width, height);
       }
       var blendedData = obj.contextSource.createImageData(width, height);
-      this.getBrightness(blendedData.data, sourceData.data, obj.lastImageData.data, obj.canvasSource.width);
+      this.getBrightness(blendedData.data, sourceData.data, obj.lastImageData.data, obj.canvasSource.width, obj);
       obj.contextBlended.putImageData(blendedData, 0, 0);
       obj.lastImageData = sourceData;
   }
 
   initScene(startPos, inputs, statsEnabled, performers, backgroundColor) {
-    this.initVideo();
-
     this.container = $('#scenes');
 
     this.w = this.container.width();
@@ -259,6 +259,9 @@ class Scene {
     this.render();
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
+
+    this.initVideo();
+
   }
 
   toggleRotation() {
@@ -337,6 +340,14 @@ class Scene {
     this.renderer.render(this.scene, this.camera);
 
     this.stats.update();
+
+    if (window.environments.performers && window.environments.performers.performers) {
+      _.each(Object.keys(window.environments.performers.performers), (performerId) => {
+        if (this.performers.indexOf(performerId) === -1) {
+          this.registerPerformer(performerId);
+        }
+      });
+    }
 
     _.each(this.videos, (obj) => {
       obj.contextSource.drawImage(obj.video, 0, 0, obj.canvasSource.width, obj.canvasSource.height);
