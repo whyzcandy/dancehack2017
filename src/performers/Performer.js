@@ -1292,11 +1292,11 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
-     if ((s.position.x > 10 && this.velocity.x > 0) || (s.position.x < -18 && this.velocity.x < 0)) {
+     if ((s.position.x > 12 && this.velocity.x > 0) || (s.position.x < -13 && this.velocity.x < 0)) {
         this.velocity.x = 0;
     }
 
-    if ((s.position.y > 15 && this.velocity.y > 0) || (s.position.y < 1.7 && this.velocity.y < 0)) {
+    if ((s.position.y > 20 && this.velocity.y > 0) || (s.position.y < 1.7 && this.velocity.y < 0)) {
         this.velocity.y = 0;
     }
           s.position.x += this.velocity.x;

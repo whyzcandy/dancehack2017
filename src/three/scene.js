@@ -216,7 +216,7 @@ class Scene {
     this.camera.position.set(0, 1.5000000041026476, 119.999990045581438);
 
     this.scene.add(this.camera);
-
+    this.scene.camera = this.camera;
     this.environments = new Environments(this.renderer, this.scene, performers);
     window.environments = this.environments;
 
@@ -252,9 +252,9 @@ class Scene {
     this.spotLight1 = createSpotlight( 0x00FFFF );
     this.spotLight2 = createSpotlight( 0xFF00FF );
     this.spotLight3 = createSpotlight( 0xFFFF00 );
-    this.spotLight1.position.set( 0, 0, 45 );
-    this.spotLight2.position.set( 40, 45, 0 );
-    this.spotLight3.position.set( -45, 30, 0 );
+    this.spotLight1.position.set( 45, 30, 0 );
+    this.spotLight2.position.set( 40, 30, 0 );
+    this.spotLight3.position.set( -45, 30, 20 );
     this.scene.add(this.spotLight1);
      this.scene.add(this.spotLight2);
       this.scene.add(this.spotLight3);
