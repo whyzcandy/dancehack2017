@@ -32,8 +32,119 @@ class Scene {
     this.vr = null;
 
     this.environments = null;
+
+    this.canvasSource;
+    this.contextSource;
+    this.contextBlended;
+    this.video;
+    this.lastImageData;
+
   }
+
+  initVideo() {
+      this.canvasSource = document.createElement('canvas');
+      this.canvasBlended = document.createElement('canvas');
+      this.canvasSource.width = this.canvasBlended.width = 250;
+      this.canvasSource.height = this.canvasBlended.height = 182;
+
+      var center = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+
+      this.contextBlended = this.canvasBlended.getContext('2d');
+      this.contextSource = this.canvasSource.getContext('2d');
+
+      this.video = document.createElement('video');
+
+      document.body.insertBefore(this.canvasBlended, document.body.firstChild);
+      document.body.insertBefore(this.canvasSource, document.body.firstChild);
+
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+      if (navigator.getUserMedia) {
+
+          navigator.getUserMedia({video: true}, (stream) => {
+              this.video.src = window.URL.createObjectURL(stream);
+              hasCamera = true;
+          }, function(err) {
+          });
+      }
+  }
+
+  getBrightness(target, curData, prevData) {
+
+      if (curData.length !== prevData.length) return null;
+      var curLeftAvg = 0;
+      var curRightAvg = 0;
+      var prevLeftAvg = 0;
+      var prevRightAvg = 0;
+
+      var i = 0;
+      var width = this.canvasSource.width;
+      var x = 0; // x position / column
+      var total = 0;
+
+      // each pixel represented by 4 elements
+      while (i < (curData.length * 0.25)) {
+          var curAverage = (curData[4*i] + curData[4*i+1] + curData[4*i+2]) / 3;
+          var prevAverage = (prevData[4*i] + prevData[4*i+1] + prevData[4*i+2]) / 3;
+
+          if (x <= width / 2) { // left half of the screen
+            curLeftAvg += curAverage;
+            prevLeftAvg += prevAverage;
+          } else if (x > width / 2 && x < width) { // right half of the screen
+            curRightAvg += curAverage;
+            prevRightAvg += prevAverage;
+          } else { // increment down a row when we've reached the end
+              x = 0;
+              continue;
+          }
+          ++i;
+          x++;
+      }
+
+      var dataLength = curData.length * 0.125;
+      curLeftAvg /= dataLength;
+      curRightAvg /= dataLength;
+      prevLeftAvg /= dataLength;
+      prevRightAvg /= dataLength;
+
+      var curTotalAvg = (curLeftAvg + curRightAvg) / 2;
+      var prevTotalAvg = (prevLeftAvg + prevRightAvg) / 2;
+
+      var i = 0;
+      var x = 0;
+      while (i < (curData.length * 0.25)) {
+        if (x > width) x = 0;
+        target[4*i] = x <= width / 2 ? curLeftAvg : curRightAvg;
+        target[4*i+1] = x <= width / 2 ? curLeftAvg : curRightAvg;
+        target[4*i+2] = x <= width / 2 ? curLeftAvg : curRightAvg;
+        target[4*i+3] = 0xFF;
+
+        ++i;
+        x++;
+
+      }
+
+      // Sides are inverted when displayed
+      console.log(curLeftAvg - curRightAvg);
+      console.log(curTotalAvg);
+
+  }
+
+  blend() {
+      var width = this.canvasSource.width;
+      var height = this.canvasSource.height;
+      var sourceData = this.contextSource.getImageData(0, 0, width, height);
+      if (!this.lastImageData) {
+        this.lastImageData = this.contextSource.getImageData(0, 0, width, height);
+      }
+      var blendedData = this.contextSource.createImageData(width, height);
+      this.getBrightness(blendedData.data, sourceData.data, this.lastImageData.data);
+      this.contextBlended.putImageData(blendedData, 0, 0);
+      this.lastImageData = sourceData;
+  }
+
   initScene(startPos, inputs, statsEnabled, performers, backgroundColor) {
+    this.initVideo();
+
     this.container = $('#scenes');
 
     this.w = this.container.width();
@@ -198,6 +309,9 @@ class Scene {
     this.renderer.render(this.scene, this.camera);
 
     this.stats.update();
+
+    this.contextSource.drawImage(this.video, 0, 0, this.canvasSource.width, this.canvasSource.height);
+    this.blend();
 
     requestAnimationFrame(this.render.bind(this));
   }
