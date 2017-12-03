@@ -7,7 +7,8 @@ const bvhLoader = require('./../libs/three/loaders/BVHLoader.js');
 const sceneLoader = require('./../libs/three/loaders/SceneLoader.js');
 const colladaLoader = require('./../libs/three/loaders/ColladaLoader.js');
 const mtlLoader = require('./../libs/three/loaders/MTLLoader.js');
-
+const util = require('./../libs/three/utils/OutlineEffect.js');
+const sky = require('./../libs/three/utils/Sky.js');
 require('./../libs/BufferGeometryMerge.js');
 
 import TWEEN from 'tween';
@@ -208,7 +209,7 @@ class Performer {
       // "hips"
     ];
 
-    console.log('New Performer: ', this.inputId);
+    //console.log('New Performer: ', this.inputId);
 
     this.effects = ['constructor','vogue', 'cloner', 'datatags', 'trails', 'particleSystem'];
 

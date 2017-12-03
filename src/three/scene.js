@@ -89,7 +89,7 @@ class Scene {
 
   getBrightness(target, curData, prevData, canvasWidth) {
 
-      console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[0]]);
+    //  console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[0]]);
       if (curData.length !== prevData.length) return null;
       var curLeftAvg = 0;
       var curRightAvg = 0;
@@ -146,10 +146,10 @@ class Scene {
       // Sides are inverted when displayed
       const x2 = (curLeftAvg - curRightAvg - 25) / 500;
       const y2 = (curTotalAvg - 40) / 50;
-      console.log(x2);//curLeftAvg - curRightAvg);
-      console.log(y2);//curTotalAvg);
+      //console.log(x2);//curLeftAvg - curRightAvg);
+      //console.log(y2);//curTotalAvg);
 
-    console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]]);
+//    console.log(this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]]);
 
     const performer = this.environments.performers.performers[Object.keys(this.environments.performers.performers)[1]];
     if (performer) {
@@ -180,6 +180,11 @@ class Scene {
 
     // / Global : this.renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+    this.renderer.gammaInput = true;
+    this.renderer.gammaOutput = true;
+
+    this.effect = new THREE.OutlineEffect( this.renderer );
 
     this.renderer.setClearColor(backgroundColor);
     this.renderer.setSize(this.w, this.h);
@@ -230,6 +235,27 @@ class Scene {
     this.controls.target = new THREE.Vector3(0,1.5,0);
     window.controls = this.controls;
 
+    var createSpotlight = function( color ) {
+        var newObj = new THREE.SpotLight( color, 2 );
+        newObj.castShadow = true;
+        newObj.angle = 0.3;
+        newObj.penumbra = 0.2;
+        newObj.decay = 2;
+        newObj.distance = 50;
+        newObj.shadow.mapSize.width = 1024;
+        newObj.shadow.mapSize.height = 1024;
+        return newObj;
+      }
+
+    this.spotLight1 = createSpotlight( 0x00FFFF );
+    this.spotLight2 = createSpotlight( 0xFF00FF );
+    this.spotLight3 = createSpotlight( 0xFFFF00 );
+    this.spotLight1.position.set( 0, 0, 45 );
+    this.spotLight2.position.set( 40, 45, 0 );
+    this.spotLight3.position.set( -45, 30, 0 );
+    this.scene.add(this.spotLight1);
+     this.scene.add(this.spotLight2);
+      this.scene.add(this.spotLight3);
 	this.controls.rotateSpeed = 1.0;
 	this.controls.zoomSpeed = 1.2;
 	this.controls.panSpeed = 0.8;
@@ -320,6 +346,11 @@ class Scene {
     this.controls.update();
     TWEEN.update();
 
+
+    if (this.effect)
+    {
+     this.effect.render(this.scene, this.camera);
+    }
     if (this.performer) {
       this.performer.update(this.clock.getDelta());
     }

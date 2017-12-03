@@ -14,7 +14,7 @@ class GridEnvironment {
     this.modalID = this.name+"_Settings";
     this.visible = true;
 
-    this.color = 0x333333;
+    this.color = 0x000000;
     this.floorSize = 50;
     this.numLines = 50;
 
@@ -71,23 +71,44 @@ class GridEnvironment {
   }
 
   initFloor(floorSize, numLines, color) {
-    /*const loader = new THREE.OBJLoader();
+
+    var alpha = 0.1;
+    var beta = 0.1;
+    var gamma = 0.1;
+    var specularColor = new THREE.Color( beta * 0.2, beta * 0.2, beta * 0.2 );
+    var specularShininess = Math.pow( 2, alpha * 10 );
+
+    var toon = new THREE.MeshPhongMaterial( {
+                color: new THREE.Color().setHSL( alpha, 0.1, gamma * 0.5 + 0.3 ).multiplyScalar( 1 - beta * 0.2 ),
+                specular: specularColor,
+                reflectivity: beta,
+                shininess: specularShininess,
+                transparent: true, 
+                opacity: 0.8
+              } );
+    const loader = new THREE.OBJLoader();
     loader.load('models/obj/stage.obj', (object) => {
-        console.log(object);
+        for (var i in object.children)
+        {
+          console.log(object.children[i]);
+          object.children[i].material = toon;
+        }
         //object.scale.set(0.12, 0.12, 0.12);
         object.rotation._x = -Math.PI / 2.0;
         object.castShadow = true;
         object.receiveShadow = true;
         object.visible = true;
+        //object.material = getToonMaterial();
+        console.log(object)
         this.gridFloor = new THREE.GridHelper(floorSize / 2, numLines, color, color);
         this.gridFloor.castShadow = true;
         this.gridFloor.receiveShadow = true;
         this.gridFloor.visible = true;
         this.elements.push(this.gridFloor);
         this.elements.push(object);
-        this.parent.add(this.gridFloor);
+        //this.parent.add(this.gridFloor);
         this.parent.add(object);
-    });*/
+    });
 
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setBaseUrl( 'models/obj/' );
@@ -103,8 +124,9 @@ class GridEnvironment {
         objLoader.setMaterials( materials );
         objLoader.setPath( 'models/obj/' );
         objLoader.load( 'model.obj', ( object ) => {
-            object.scale.set(150, 150, 150);
+            object.scale.set(200, 200, 200);
 
+         object.position.set(0, 50, -15);
           object.rotation._x = -Math.PI / 2.0;
           object.castShadow = true;
           object.receiveShadow = true;
@@ -116,14 +138,16 @@ class GridEnvironment {
   }
 
   initLights(scene, camera) {
+    
     this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
     this.hemiLight.color.setHSL(0.6250011825856442, 60.75949367088608, 30.980392156862745);
     this.hemiLight.groundColor.setHSL(4.190951334017909e-8, 33.68421052631579, 37.254901960784316);
     this.hemiLight.position.set(0, 500, 0);
     
+    this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    
     this.parent.add(this.hemiLight);
 
-    this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
     this.dirLight.position.set(-1, 0.75, 1);
     this.dirLight.position.multiplyScalar(50);
     this.dirLight.name = 'dirlight';
