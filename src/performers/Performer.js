@@ -838,12 +838,8 @@ class Performer {
 
   pushOffset2D(u, v) {
     const s = this.getScene();
-    this.velocity.x += u;
-    this.velocity.y += v;
-    this.velocity.x = Math.min(this.velocity.x, 5);
-    this.velocity.x = Math.max(this.velocity.x, -5);
-    this.velocity.y = Math.min(this.velocity.y, 5);
-    this.velocity.y = Math.max(this.velocity.y, -5);
+    this.velocity.x += u * 0.1;
+    this.velocity.y -= v * 0.1;
   }
 
   getDelay() {
@@ -1296,26 +1292,22 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
+     if ((s.position.x > 10 && this.velocity.x > 0) || (s.position.x < -18 && this.velocity.x < 0)) {
+        this.velocity.x = 0;
+    }
+
+    if ((s.position.y > 15 && this.velocity.y > 0) || (s.position.y < 1.7 && this.velocity.y < 0)) {
+        this.velocity.y = 0;
+    }
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
- 
-    s.position.x = Math.min(s.position.x, 10);
-    s.position.x = Math.max(s.position.x, -10);
-    s.position.y = Math.min(s.position.y, 10);
-    s.position.y = Math.max(s.position.y, -10);
+ /*
 
     this.velocity.x = Math.max(this.velocity.x, -10);
     this.velocity.x = Math.min(this.velocity.x, 10);
     this.velocity.y = Math.max(this.velocity.y, -10);
     this.velocity.y = Math.min(this.velocity.y, 10);
-
-    if (s.position.x == 10 || s.position.x == -10) {
-        this.velocity.x = 0;
-    }
-
-    if (s.position.y == 10 || s.position.y == -10) {
-        this.velocity.y = 0;
-    }
+*/
   }
 
   // p.dataBuffer.push(data);

@@ -87,11 +87,15 @@ class GridEnvironment {
                 opacity: 0.8
               } );
     const loader = new THREE.OBJLoader();
+    var boundingBox ;
     loader.load('models/obj/stage.obj', (object) => {
         for (var i in object.children)
         {
-          console.log(object.children[i]);
           object.children[i].material = toon;
+          object.children[i].geometry.computeBoundingBox();
+          boundingBox = object.children[i].geometry.boundingBox;
+          console.log("boundingBox:");
+          console.log(boundingBox);
         }
         //object.scale.set(0.12, 0.12, 0.12);
         object.rotation._x = -Math.PI / 2.0;
