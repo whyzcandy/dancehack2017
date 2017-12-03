@@ -1296,7 +1296,7 @@ class Performer {
         this.velocity.x = 0;
     }
 
-    if ((s.position.y > 20 && this.velocity.y > 0) || (s.position.y < 1.7 && this.velocity.y < 0)) {
+    if ((s.position.y > 20 && this.velocity.y > 0) || (s.position.y < 2 && this.velocity.y < 0)) {
         this.velocity.y = 0;
     }
           s.position.x += this.velocity.x;
