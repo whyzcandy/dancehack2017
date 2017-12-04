@@ -216,6 +216,7 @@ class InputManager {
 
       const aButton = _.filter(data, d => d.id == 'A');
       if (aButton.length > 0) {
+        console.log(aButton)
         if (aButton[0].pressed !== previous.a) {
           if (aButton[0].pressed) {
             console.log("A BUTTON PRESSED")
@@ -225,7 +226,10 @@ class InputManager {
             //this.parent.performers.performers[Object.keys(this.parent.performers.performers)[0]].performerEffects.effects[0].clonePerformer()
           }
         }
-        //previous.a = aButton[0].pressed;
+        previous.a = aButton[0].pressed;
+        setTimeout(()=>{
+          previous.a = false;
+        }, 100)
       }
 
       const bButton = _.filter(data, d => d.id == 'B');

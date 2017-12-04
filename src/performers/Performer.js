@@ -94,7 +94,7 @@ class Performer {
 
     this.scene = null;
     this.velocity = { x: 0, y: 0 };
-    this.modelShrink = 100;
+    this.modelShrink = 25;
 
     const bvhStructure = {
       hips: {

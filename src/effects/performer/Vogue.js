@@ -15,10 +15,10 @@ class Vogue {
     this.lastClick = 0;
     this.clickCount = 0;
 
-    this.startingOpacity = 1;// 0.15;
+    this.startingOpacity = 0.5;// 0.15;
     this.cloneRate = 0.25;
-    this.fadeDelay = 2;
-    this.cloneLife = 2;// 1.25;
+    this.fadeDelay = 1;
+    this.cloneLife = 1;// 1.25;
     this.cloneSize = 1;
 
     this.addToDatGui(this.guiFolder);
