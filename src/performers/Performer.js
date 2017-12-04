@@ -94,7 +94,7 @@ class Performer {
 
     this.scene = null;
     this.velocity = { x: 0, y: 0 };
-    this.modelShrink = 100;
+    this.modelShrink = 25;
 
     const bvhStructure = {
       hips: {
@@ -864,7 +864,7 @@ class Performer {
     this.dataBuffer = buffer;
   }
 
-  randomizeAll(switchTime) {
+  randomizeAll(switchTime, stop) {
     // var parts = ['head', 'leftshoulder', 'rightshoulder', 'leftupleg',  'rightupleg'];
     const bvhStructure = {
       hips: {

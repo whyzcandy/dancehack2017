@@ -27,7 +27,7 @@ class Trails {
     this.circlePoints = [];
     this.twoPI = Math.PI * 2;
     this.index = 10;
-    this.scale = 2;
+    this.scale = 10;
     this.inc = this.twoPI / 32.0;
 
     for (let i = 0; i <= this.twoPI + this.inc; i += this.inc) {
