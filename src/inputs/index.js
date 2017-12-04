@@ -148,6 +148,7 @@ class InputManager {
       lt:0,
       rt:0
     }
+    let trailsRunning = false
 
     this.registerCallback('gamepads', 'message', 'Gamepad', (data) => {
       const leftStick = _.merge(_.map(_.filter(data, d => d.id.slice(0, 4) == 'Left'), (d) => {
@@ -231,10 +232,36 @@ class InputManager {
       if (bButton.length > 0) {
         if (bButton[0].pressed !== previous.b) {
           if (bButton[0].pressed) {
-            
+            console.log("B BUTTON PRESSED")
+            console.log(_.size(this.parent.performers.performers) )
+            _.each(this.parent.performers.performers, (performer)=>{
+              if(!trailsRunning){
+                performer.addEffects(["trails"])
+                console.log("ADD TRAILS")
+              } else{
+                performer.removeEffects(["trails"])
+                console.log("REMOVE TRAILS")
+              }
+              trailsRunning = !trailsRunning
+
+              /*
+              performer.performerEffects.effects[1].addTrail(this.parent, 'righthand', {
+                "trailLength": 1,
+                "headRed": 255,
+                "headGreen": 0,
+                "headBlue": 0,
+                "headAlpha": 1,
+                "tailRed": 255,
+                "tailGreen": 0,
+                "tailBlue": 0,
+                "tailAlpha": 1,
+              })
+              */
+
+            })
           }
         }
-        previous.b = bButton[0].pressed;
+        //previous.b = bButton[0].pressed;
       }
 
       const xButton = _.filter(data, d => d.id == 'X');
