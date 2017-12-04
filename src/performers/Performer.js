@@ -1292,22 +1292,19 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
-     if ((s.position.x > 10 && this.velocity.x > 0) || (s.position.x < -18 && this.velocity.x < 0)) {
+     if ((s.position.x > 12 && this.velocity.x > 0) || (s.position.x < -13 && this.velocity.x < 0)) {
         this.velocity.x = 0;
     }
 
-    if ((s.position.y > 15 && this.velocity.y > 0) || (s.position.y < 1.7 && this.velocity.y < 0)) {
+    if ((s.position.y > 30 && this.velocity.y > 0) || (s.position.y < 2 && this.velocity.y < 0)) {
         this.velocity.y = 0;
     }
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
- /*
-
-    this.velocity.x = Math.max(this.velocity.x, -10);
-    this.velocity.x = Math.min(this.velocity.x, 10);
-    this.velocity.y = Math.max(this.velocity.y, -10);
-    this.velocity.y = Math.min(this.velocity.y, 10);
-*/
+          console.log(this.parent.camera);
+          this.parent.camera.position.y -= this.velocity.x * 4;
+          this.parent.camera.position.x -= this.velocity.x * 10;
+          this.parent.camera.position.z += this.velocity.y * 7;
   }
 
   // p.dataBuffer.push(data);
