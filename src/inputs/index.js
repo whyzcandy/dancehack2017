@@ -149,6 +149,7 @@ class InputManager {
       rt:0
     }
     let trailsRunning = false
+    let scaleRandomizing = false
 
     this.registerCallback('gamepads', 'message', 'Gamepad', (data) => {
       const leftStick = _.merge(_.map(_.filter(data, d => d.id.slice(0, 4) == 'Left'), (d) => {
@@ -272,10 +273,26 @@ class InputManager {
       if (xButton.length > 0) {
         if (xButton[0].pressed !== previous.x) {
           if (xButton[0].pressed) {
-            this.switchScene("default");
+            console.log("X BUTTON PRESSED")
+            if(!scaleRandomizing){
+               _.each(this.parent.performers.performers, (performer)=>{
+                  performer.randomizeAll(1000);
+                })
+               scaleRandomizing = true
+            } else {
+              _.each(this.parent.performers.performers, (performer)=>{
+                performer.resetScale();
+              })
+              scaleRandomizing = false
+            }
+           
+
           }
         }
         previous.x = xButton[0].pressed;
+        setTimeout(()=>{
+          previous.x = false;
+        }, 100)
       }
 
       const yButton = _.filter(data, d => d.id == 'Y');
