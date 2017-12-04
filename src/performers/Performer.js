@@ -94,7 +94,7 @@ class Performer {
 
     this.scene = null;
     this.velocity = { x: 0, y: 0 };
-    this.modelShrink = 25;
+    this.modelShrink = 50;
 
     const bvhStructure = {
       hips: {
@@ -864,7 +864,7 @@ class Performer {
     this.dataBuffer = buffer;
   }
 
-  randomizeAll(switchTime, stop) {
+  randomizeAll(switchTime) {
     // var parts = ['head', 'leftshoulder', 'rightshoulder', 'leftupleg',  'rightupleg'];
     const bvhStructure = {
       hips: {
@@ -1293,7 +1293,6 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
-                  console.log(this.velocity.x);
 
      if ((s.position.x > 24 && this.velocity.x > 0) || (s.position.x < -24 && this.velocity.x < 0)) {
         this.velocity.x = 0;
@@ -1305,9 +1304,14 @@ class Performer {
 
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
+          //console.log(this.inputId == 'PN_User_0');
+          if (this.inputId == 'PN_User_0')
+          {
+
           this.parent.camera.position.y -= this.velocity.x * 0.2 ;
           this.parent.camera.position.x -= this.velocity.x ;
           this.parent.camera.position.z += this.velocity.y * 1.2;
+          }
   }
 
   // p.dataBuffer.push(data);
