@@ -57,7 +57,7 @@ class Trails {
       tailAlpha: 0.35,
     };
 
-    this.addToDatGui(this.options, this.guiFolder);
+    //this.addToDatGui(this.options, this.guiFolder);
   }
 
   addToDatGui(options, guiFolder) {
@@ -70,6 +70,7 @@ class Trails {
   }
 
   addTrail(parent, part, options) {
+    console.log("ADD TRAIL")
     // create the trail renderer object
     const trail = new THREE.TrailRenderer(parent, false);
 
@@ -80,7 +81,7 @@ class Trails {
     trailMaterial.uniforms.tailColor.value.set(options.tailRed, options.tailGreen, options.tailBlue, options.tailAlpha);
 
 
-    trail.initialize(trailMaterial, options.trailLength, false, 0, this.trailHeadGeometry, part);
+    trail.initialize(trailMaterial, 10, false, 0, this.trailHeadGeometry, part);
     trail.activate();
 
     return trail;
