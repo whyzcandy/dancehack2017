@@ -213,7 +213,7 @@ class Scene {
     // var src = Common.convertLatLonToVec3(startPos.lat, startPos.lon).multiplyScalar(radius);
 
     // this.camera.position.copy(src);
-    this.camera.position.set(0, 1.5000000041026476, 119.999990045581438);
+    this.camera.position.set(0, 18, 50);
 
     this.scene.add(this.camera);
     this.scene.camera = this.camera;
@@ -234,8 +234,7 @@ class Scene {
     // this.controls.enableKeys = false;
 
     this.controls = new THREE.TrackballControls( this.camera );
-    this.controls.target = new THREE.Vector3(0,1.5,0);
-    console.log("!!!!!!!!!!!!!!!!!");
+    this.controls.target = new THREE.Vector3(0,8,0);
 
     console.log(this.camera);
 

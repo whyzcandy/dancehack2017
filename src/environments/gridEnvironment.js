@@ -91,11 +91,10 @@ class GridEnvironment {
     loader.load('models/obj/stage.obj', (object) => {
         for (var i in object.children)
         {
+          object.children[i].scale.set(0.4, 0.4, 0.4);
           object.children[i].material = toon;
           object.children[i].geometry.computeBoundingBox();
           boundingBox = object.children[i].geometry.boundingBox;
-          console.log("boundingBox:");
-          console.log(boundingBox);
         }
         //object.scale.set(0.12, 0.12, 0.12);
         object.rotation._x = -Math.PI / 2.0;
