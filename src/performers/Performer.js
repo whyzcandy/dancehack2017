@@ -1301,13 +1301,10 @@ class Performer {
     }
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
- /*
-
-    this.velocity.x = Math.max(this.velocity.x, -10);
-    this.velocity.x = Math.min(this.velocity.x, 10);
-    this.velocity.y = Math.max(this.velocity.y, -10);
-    this.velocity.y = Math.min(this.velocity.y, 10);
-*/
+          console.log(this.parent.camera);
+          this.parent.camera.position.y -= this.velocity.x * 4;
+          this.parent.camera.position.x -= this.velocity.x * 10;
+          this.parent.camera.position.z += this.velocity.y * 7;
   }
 
   // p.dataBuffer.push(data);

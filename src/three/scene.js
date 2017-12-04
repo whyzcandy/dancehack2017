@@ -235,6 +235,10 @@ class Scene {
 
     this.controls = new THREE.TrackballControls( this.camera );
     this.controls.target = new THREE.Vector3(0,1.5,0);
+    console.log("!!!!!!!!!!!!!!!!!");
+
+    console.log(this.camera);
+
     window.controls = this.controls;
 
     var createSpotlight = function( color ) {
@@ -395,7 +399,6 @@ class Scene {
 
     this.w = this.container.width();
     this.h = this.container.height();
-
     this.camera.aspect = this.w / this.h;
     this.camera.updateProjectionMatrix();
 
