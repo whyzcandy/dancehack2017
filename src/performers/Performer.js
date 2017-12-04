@@ -471,6 +471,7 @@ class Performer {
 
   setScene(scene) {
     this.scene = scene;
+    scene.scale.set(3, 3, 3);
   }
 
   getScene() {
@@ -838,8 +839,8 @@ class Performer {
 
   pushOffset2D(u, v) {
     const s = this.getScene();
-    this.velocity.x += u * 0.1;
-    this.velocity.y -= v * 0.1;
+    this.velocity.x += u * 0.1 * 0.4;
+    this.velocity.y -= v * 0.1 * 0.4;
   }
 
   getDelay() {
@@ -1292,19 +1293,21 @@ class Performer {
     }
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
-     if ((s.position.x > 12 && this.velocity.x > 0) || (s.position.x < -13 && this.velocity.x < 0)) {
+                  console.log(this.velocity.x);
+
+     if ((s.position.x > 24 && this.velocity.x > 0) || (s.position.x < -24 && this.velocity.x < 0)) {
         this.velocity.x = 0;
     }
 
-    if ((s.position.y > 30 && this.velocity.y > 0) || (s.position.y < 2 && this.velocity.y < 0)) {
+    if ((s.position.y > 13 && this.velocity.y > 0) || (s.position.y < 2*0.4 && this.velocity.y < 0)) {
         this.velocity.y = 0;
     }
+
           s.position.x += this.velocity.x;
           s.position.y += this.velocity.y;
-          console.log(this.parent.camera);
-          this.parent.camera.position.y -= this.velocity.x * 4;
-          this.parent.camera.position.x -= this.velocity.x * 10;
-          this.parent.camera.position.z += this.velocity.y * 7;
+          this.parent.camera.position.y -= this.velocity.x * 0.2 ;
+          this.parent.camera.position.x -= this.velocity.x ;
+          this.parent.camera.position.z += this.velocity.y * 1.2;
   }
 
   // p.dataBuffer.push(data);
@@ -1333,7 +1336,6 @@ class Performer {
           data[i].position.y,
           data[i].position.z,
         );
-
         this.getPerformer().meshes[jointName].quaternion.copy(data[i].quaternion);
       }
     }

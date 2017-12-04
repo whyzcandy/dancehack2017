@@ -44,8 +44,6 @@ class Scene {
       if (this.videos[i].performer === null) {
         this.videos[i].performer = this.environments.performers.performers[performerId];
         this.performers.push(performerId);
-        console.log('performer added to video');
-        console.log(this.videos);
         break;
       }
     }
@@ -69,9 +67,6 @@ class Scene {
 
           var contextBlended = canvasBlended.getContext('2d');
           var contextSource = canvasSource.getContext('2d');
-
-          document.body.insertBefore(canvasBlended, document.body.firstChild);
-          document.body.insertBefore(canvasSource, document.body.firstChild);
 
           navigator.mediaDevices.getUserMedia(
             { video: { deviceId: { exact: device.deviceId } } }
@@ -151,11 +146,6 @@ class Scene {
       // Sides are inverted when displayed
       const x2 = (curLeftAvg - curRightAvg - 25) / 500;
       const y2 = (curTotalAvg - 40) / 50;
-      //console.log(x2);//curLeftAvg - curRightAvg);
-      //console.log(y2);//curTotalAvg);
-      // console.log(x2);//curLeftAvg - curRightAvg);
-      // console.log(y2);//curTotalAvg);
-
     if (obj.performer) {
         obj.performer.pushOffset2D(x2, y2);
     }
@@ -213,7 +203,7 @@ class Scene {
     // var src = Common.convertLatLonToVec3(startPos.lat, startPos.lon).multiplyScalar(radius);
 
     // this.camera.position.copy(src);
-    this.camera.position.set(0, 1.5000000041026476, 119.999990045581438);
+    this.camera.position.set(0, 18, 50);
 
     this.scene.add(this.camera);
     this.scene.camera = this.camera;
@@ -234,10 +224,7 @@ class Scene {
     // this.controls.enableKeys = false;
 
     this.controls = new THREE.TrackballControls( this.camera );
-    this.controls.target = new THREE.Vector3(0,1.5,0);
-    console.log("!!!!!!!!!!!!!!!!!");
-
-    console.log(this.camera);
+    this.controls.target = new THREE.Vector3(0,8,0);
 
     window.controls = this.controls;
 

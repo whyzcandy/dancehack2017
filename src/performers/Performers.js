@@ -100,14 +100,14 @@ class Performers {
 
   update(inputId, data) {
     // NOTE(wrd): Uncomment below when using live suit
-    // if (this.performers[inputId]) {
-    // 	this.performers[inputId].update(data);
-    // }
+    if (this.performers[inputId]) {
+    	this.performers[inputId].update(data);
+    }
 
     // NOTE(wrd): Comment below when using live suit
-    _.each(this.performers, (p) => {
-     p.update(data);
-    });
+    // _.each(this.performers, (p) => {
+    //  p.update(data);
+    // });
 
     this.groupEffects.update(this.performers);
   }
