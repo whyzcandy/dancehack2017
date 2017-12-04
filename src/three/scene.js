@@ -56,7 +56,8 @@ class Scene {
       navigator.mediaDevices.enumerateDevices().then((deviceInfo) => {
 
         var videoInputs = _.filter(deviceInfo, (device) => {
-          return device.kind === 'videoinput';
+          console.log(device);
+          return device.kind === 'videoinput' && device.label.startsWith('USB');
         });
 
         _.each(videoInputs, (device) => {
