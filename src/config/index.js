@@ -36,7 +36,7 @@ const defaults = {
 
   inputs: ['keyboard', 'mouse', 'perceptionNeuron', 'midiController', 'gamepads'], // keyboard, kinecttransport, myo, neurosky, perceptionNeuron, gamepads, midiController
   performers: [],
-  performerColors: ['FFFFFF', '666666', 'F0F7FA', '5992AE', 'FF009B'],
+  performerColors: ['FFFFFF', '334444', 'F0F7FA', '5992AE', 'FF009B'],
   // performerColors: ['FFFFFF', 'FFFFFF', 'FFFFFF', 'FFFFFF', 'FFFFFF', 'FFFFFF'],
   // performerColors: ['FF0000', '00FF00', '0000FF'],
   environments: [],

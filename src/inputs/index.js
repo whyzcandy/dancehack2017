@@ -240,14 +240,14 @@ class InputManager {
             console.log("B BUTTON PRESSED")
             console.log(_.size(this.parent.performers.performers) )
             _.each(this.parent.performers.performers, (performer)=>{
-              if(!trailsRunning){
+              if(!performer.trailsRunning){
                 performer.addEffects(["trails"])
                 console.log("ADD TRAILS")
               } else{
                 performer.removeEffects(["trails"])
                 console.log("REMOVE TRAILS")
               }
-              trailsRunning = !trailsRunning
+              performer.trailsRunning = !performer.trailsRunning
 
               /*
               performer.performerEffects.effects[1].addTrail(this.parent, 'righthand', {

@@ -1294,7 +1294,7 @@ class Performer {
     this.performerEffects.update(this.getScene());
           const s = this.getScene();
 
-     if ((s.position.x > 24 && this.velocity.x > 0) || (s.position.x < -24 && this.velocity.x < 0)) {
+     if ((s.position.x > 10 && this.velocity.x > 0) || (s.position.x < -24 && this.velocity.x < 0)) {
         this.velocity.x = 0;
     }
 
